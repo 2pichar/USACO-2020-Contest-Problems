@@ -5,16 +5,30 @@
 
 using namespace std;
 
-vector<string> split(string text){
+vector<string> split(string text, char delim){
 	vector<string> words;
-	string current;
-	for(int i = 0; i < text.length(); i++){
-		if(text[i] == ' '){
-			words.push_back(current);
-			current = "";
-		} else {
-			current += text[i];
+	string cWord;
+	char empty = ""[0];
+	char letter;
+	if(delim == empty){
+		for(int i = 0; i < text.length(); i++){
+			letter = text[i];
+			cWord += letter;
+			words.push_back(cWord);
+			cWord = "";
 		}
+	} else {
+		for(int i = 0; i < text.length(); i++){
+			letter = text[i];
+			if(letter != delim){
+				cWord += letter;
+				
+			} else {
+				words.push_back(cWord);
+				cWord = "";
+			}
+		}
+		words.push_back(cWord);
 	}
 	return words;
 }
@@ -24,24 +38,22 @@ int main(){
 	ofstream ofile("word.out");
 	string firstline;
 	getline(ifile, firstline);
-	vector<string> firstlineWords = split(firstline);
+	vector<string> firstlineWords = split(firstline, ' ');
 	int N = stoi(firstlineWords[0]);
-	for(int i = 0; i < firstlineWords.size(); i++){
-		cout << firstlineWords[i] << "\n";
-	}
+	int K = stoi(firstlineWords[1]);
 	string essay;
 	getline(ifile, essay);
-	vector<string> essayWords = split(essay);
+	vector<string> essayWords = split(essay, ' ');
 	string cLine;
 	string line;
-	/*
+
 	int tChars = 0;
 	for(int i = 0; i < K; i++){
 		if(tChars != K && tChars + essayWords[i].length() <= K){
 			cLine += essayWords[i] + " ";
 			tChars += essayWords[i].length();
 		} else {
-			vector<string> words = split(cLine);
+			vector<string> words = split(cLine, ' ');
 			for(int i = 0; i < words.size(); i++){
 				line += words[i];
 				if(i != words.size()-1){
@@ -51,6 +63,7 @@ int main(){
 			ofile << line << endl;
 			tChars = 0;
 			cLine = "";
+			line = "";
 		}
-	}*/
+	}
 }
