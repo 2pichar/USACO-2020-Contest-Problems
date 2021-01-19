@@ -5,11 +5,11 @@
 
 using namespace std;
 
-vector<string> split(string const &text, char const &delim){
-	vector<string> words;
-	string cWord;
+const vector<string> split(string const &text, char const &delim){
+	vector<string> words = {};
+	string cWord = "";
 	char empty = ""[0];
-	char letter;
+	char letter = ""[0];
 	if(delim == empty){
 		for(int i = 0; i < text.length(); i++){
 			letter = text[i];
@@ -33,10 +33,10 @@ vector<string> split(string const &text, char const &delim){
 	return words;
 }
 
-string readfile(string const &file){
+const string readfile(string const &file){
 	ifstream ifs(file, ios::in);
-	string text;
-	string ct;
+	string text = "";
+	string ct = "";
 	while(!ifs.eof()){
 		getline(ifs, ct);
 		text += ct + '\n';
@@ -48,25 +48,22 @@ string readfile(string const &file){
 void output(int &tChars, string &cLine);
 
 int main(){
-	string text = readfile("word.in");
-	vector<string> lines;
-	vector<string> firstlineWords;
-	vector<string> essayWords;
-	lines = split(text, '\n');
-	firstlineWords = split(lines[0], ' ');
-	int N = stoi(firstlineWords[0]);
-	int K = stoi(firstlineWords[1]);
-	essayWords = split(lines[1], ' ');
-	string cLine;
+	const string text = readfile("word.in");
+	const vector<string> lines = split(text, '\n');
+	const vector<string> firstlineWords = split(lines[0], ' ');
+	const int* N = new int(stoi(firstlineWords[0]));
+	const int* K = new int(stoi(firstlineWords[1]));
+	const vector<string> essayWords = split(lines[1], ' ');
+	string cLine = "";
 	int tChars = 0;
-	for(int i = 0; i < N; i++){
-		if(tChars < K && tChars + essayWords[i].length() <= K){
+	for(int i = 0; i < *N; i++){
+		if(tChars < *K && tChars + essayWords[i].length() <= *K){
 			cLine += essayWords[i] + " ";
 			tChars += essayWords[i].length();
-			if(tChars == K || (tChars + essayWords[i+1].length()) > K){
+			if(tChars == *K || (tChars + essayWords[i+1].length()) > *K){
 				output(tChars, cLine);
 			}
-			if(i == N-1){
+			if(i == *N-1){
 				output(tChars, cLine);
 			}
 		} else {
@@ -77,7 +74,7 @@ int main(){
 
 void output(int &tChars, string &cLine){
 	ofstream ofile("word.out", ofstream::app);
-	string line;
+	string line = "";
 	vector<string> words = split(cLine, ' ');
 				for(int i = 0; i < words.size(); i++){
 					line += words[i];
