@@ -5,7 +5,7 @@
 
 using namespace std;
 
-vector<string> split(string text, char delim){
+vector<string> split(string const &text, char const &delim){
 	vector<string> words;
 	string cWord;
 	char empty = ""[0];
@@ -33,7 +33,7 @@ vector<string> split(string text, char delim){
 	return words;
 }
 
-string readfile(string file){
+string readfile(string const &file){
 	ifstream ifs(file, ios::in);
 	string text;
 	string ct;
@@ -47,13 +47,11 @@ string readfile(string file){
 
 void output(int &tChars, string &cLine);
 
-string text;
-vector<string> lines;
-vector<string> firstlineWords;
-vector<string> essayWords;
-
 int main(){
-	text = readfile("word.in");
+	string text = readfile("word.in");
+	vector<string> lines;
+	vector<string> firstlineWords;
+	vector<string> essayWords;
 	lines = split(text, '\n');
 	firstlineWords = split(lines[0], ' ');
 	int N = stoi(firstlineWords[0]);
