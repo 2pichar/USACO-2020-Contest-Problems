@@ -33,65 +33,62 @@ vector<string> split(string text, char delim){
 	return words;
 }
 
-ifstream ifile("word.in");
-ofstream ofile("word.out", ofstream::app);
-string firstline;
+string readfile(string file){
+	ifstream ifs(file, ios::in);
+	string text;
+	string ct;
+	while(!ifs.eof()){
+		getline(ifs, ct);
+		text += ct + '\n';
+	}
+	ifs.close();
+	return text;
+}
+
+void output(int &tChars, string &cLine);
+
+string text;
+vector<string> lines;
 vector<string> firstlineWords;
-string essay;
 vector<string> essayWords;
 
 int main(){
-	getline(ifile, firstline);
-	firstlineWords = split(firstline, ' ');
+	text = readfile("word.in");
+	lines = split(text, '\n');
+	firstlineWords = split(lines[0], ' ');
 	int N = stoi(firstlineWords[0]);
 	int K = stoi(firstlineWords[1]);
-	getline(ifile, essay);
-	essayWords = split(essay, ' ');
+	essayWords = split(lines[1], ' ');
 	string cLine;
-	string line;
 	int tChars = 0;
 	for(int i = 0; i < N; i++){
 		if(tChars < K && tChars + essayWords[i].length() <= K){
 			cLine += essayWords[i] + " ";
 			tChars += essayWords[i].length();
 			if(tChars == K || (tChars + essayWords[i+1].length()) > K){
-				vector<string> words = split(cLine, ' ');
-				for(int i = 0; i < words.size(); i++){
-					line += words[i];
-					if(i != words.size()-1){
-						line += " ";
-					}
-				}
-				ofile << line << endl;
-				tChars = 0;
-				cLine = "";
-				line = "";
+				output(tChars, cLine);
 			}
 			if(i == N-1){
-				vector<string> words = split(cLine, ' ');
+				output(tChars, cLine);
+			}
+		} else {
+			output(tChars, cLine);
+		}
+	}
+}
+
+void output(int &tChars, string &cLine){
+	ofstream ofile("word.out", ofstream::app);
+	string line;
+	vector<string> words = split(cLine, ' ');
 				for(int i = 0; i < words.size(); i++){
 					line += words[i];
 					if(i != words.size()-1){
 						line += " ";
 					}
 				}
-				ofile << line << endl;
-				tChars = 0;
-				cLine = "";
-				line = "";
-			}
-		} else {
-			vector<string> words = split(cLine, ' ');
-			for(int i = 0; i < words.size(); i++){
-				line += words[i];
-				if(i != words.size()-1){
-					line += " ";
-				}
-			}
-			ofile << line << endl;
-			tChars = 0;
-			cLine = "";
-			line = "";
-		}
-	}
+	ofile << line << endl;
+	tChars = 0;
+	cLine = "";
+	ofile.close();
 }
