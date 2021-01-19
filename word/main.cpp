@@ -33,25 +33,53 @@ vector<string> split(string text, char delim){
 	return words;
 }
 
+ifstream ifile("word.in");
+ofstream ofile("word.out", ofstream::app);
+string firstline;
+vector<string> firstlineWords;
+string essay;
+vector<string> essayWords;
+
 int main(){
-	ifstream ifile("word.in");
-	ofstream ofile("word.out");
-	string firstline;
 	getline(ifile, firstline);
-	vector<string> firstlineWords = split(firstline, ' ');
+	firstlineWords = split(firstline, ' ');
 	int N = stoi(firstlineWords[0]);
 	int K = stoi(firstlineWords[1]);
-	string essay;
 	getline(ifile, essay);
-	vector<string> essayWords = split(essay, ' ');
+	essayWords = split(essay, ' ');
 	string cLine;
 	string line;
-
 	int tChars = 0;
-	for(int i = 0; i < K; i++){
-		if(tChars != K && tChars + essayWords[i].length() <= K){
+	for(int i = 0; i < N; i++){
+		if(tChars < K && tChars + essayWords[i].length() <= K){
 			cLine += essayWords[i] + " ";
 			tChars += essayWords[i].length();
+			if(tChars == K || (tChars + essayWords[i+1].length()) > K){
+				vector<string> words = split(cLine, ' ');
+				for(int i = 0; i < words.size(); i++){
+					line += words[i];
+					if(i != words.size()-1){
+						line += " ";
+					}
+				}
+				ofile << line << endl;
+				tChars = 0;
+				cLine = "";
+				line = "";
+			}
+			if(i == N-1){
+				vector<string> words = split(cLine, ' ');
+				for(int i = 0; i < words.size(); i++){
+					line += words[i];
+					if(i != words.size()-1){
+						line += " ";
+					}
+				}
+				ofile << line << endl;
+				tChars = 0;
+				cLine = "";
+				line = "";
+			}
 		} else {
 			vector<string> words = split(cLine, ' ');
 			for(int i = 0; i < words.size(); i++){
