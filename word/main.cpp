@@ -32,7 +32,7 @@ void split(string const &text, char const &delim, vector<string> &vect){
 	}
 }
 
-const string readfile(string const &file){
+void dumpfile(string const &file, string &out){
 	ifstream ifs(file, ios::in);
 	string text = "";
 	string ct = "";
@@ -41,7 +41,7 @@ const string readfile(string const &file){
 		text += ct + '\n';
 	}
 	ifs.close();
-	return text;
+	out = text;
 }
 
 void output(int &tChars, string &cLine){
@@ -62,14 +62,16 @@ void output(int &tChars, string &cLine){
 }
 
 int main(){
-	const string text = readfile("word.in");
-	vector<string> vect;
+	string text = "";
+	dumpfile("word.in", text);
+	vector<string> vect = {};
 	split(text, '\n', vect);
-	vector<string> v2;
-	split(vect[0], ' ', v2);
-	const int N = stoi(v2[0]);
-	const int K  = stoi(v2[1]);
-	split(vect[1], ' ', vect);
+	const string l1 = vect[0];
+	const string l2 = vect[1];
+	split(l1, ' ', vect);
+	const int N = stoi(vect[0]);
+	const int K  = stoi(vect[1]);
+	split(l2, ' ', vect);
 	string cLine = "";
 	int tChars = 0;
 	for(int i = 0; i < N; i++){
